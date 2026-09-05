@@ -58,3 +58,8 @@ gh release create v<version> dist/graph-editor-<version>-arm64.dmg --repo HOYUN-
 붙는다. 파일명을 명시하거나 빌드 전에 `rm -f dist/*.dmg` 로 비운다.
 
 그 뒤 `Casks/graph-editor.rb` 의 `version` 과 `sha256` 을 갱신해 커밋·푸시한다.
+푸시 전에 `brew style --cask hoyun-y/graph-editor/graph-editor` 로 stanza 순서를 확인한다
+(`--fix` 로 자동 정렬된다).
+
+앱이 실행 중이어도 `brew upgrade` 가 그냥 되도록 cask 에 `uninstall quit:` 을 둔다 — 없으면
+사용자가 손으로 앱을 끄고 다시 시도해야 한다.

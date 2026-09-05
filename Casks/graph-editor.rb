@@ -5,7 +5,7 @@ cask "graph-editor" do
   url "https://github.com/HOYUN-Y/homebrew-graph-editor/releases/download/v#{version}/graph-editor-#{version}-arm64.dmg"
   name "Graph Editor"
   desc "문서·도식·표·코드를 한 곳에서 쓰는 편집기"
-  homepage "https://editor.devprofessional.xyz"
+  homepage "https://editor.devprofessional.xyz/"
 
   depends_on arch: :arm64
   depends_on macos: :sequoia
@@ -22,6 +22,11 @@ cask "graph-editor" do
     system_command "/usr/bin/xattr",
                    args: ["-dr", "com.apple.quarantine", "#{appdir}/Graph Editor.app"]
   end
+
+  # 실행 중인 앱은 brew 가 교체하지 못한다. 이게 없으면 `brew upgrade` 전에 사용자가 손으로
+  # 앱을 꺼야 하고, 안 끄면 업그레이드가 그냥 실패한다. brew 가 대신 종료하게 맡긴다.
+  # (upgrade 는 구버전 uninstall 을 먼저 하므로 이 stanza 가 그때 걸린다.)
+  uninstall quit: "xyz.devprofessional.editor"
 
   zap trash: [
     "~/Library/Application Support/desktop-shell",
