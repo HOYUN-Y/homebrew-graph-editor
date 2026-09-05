@@ -51,7 +51,10 @@ cd <graph_editor>/spikes/desktop-shell
 nvm use 22
 npm run dist
 shasum -a 256 dist/graph-editor-<version>-arm64.dmg
-gh release create v<version> dist/*.dmg --repo HOYUN-Y/homebrew-graph-editor
+gh release create v<version> dist/graph-editor-<version>-arm64.dmg --repo HOYUN-Y/homebrew-graph-editor
 ```
+
+`dist/*.dmg` 로 올리지 않는다 — `dist/` 에 이전 버전 dmg 가 남아 있으면 구버전까지 같이 릴리스에
+붙는다. 파일명을 명시하거나 빌드 전에 `rm -f dist/*.dmg` 로 비운다.
 
 그 뒤 `Casks/graph-editor.rb` 의 `version` 과 `sha256` 을 갱신해 커밋·푸시한다.
