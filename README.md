@@ -5,7 +5,7 @@
 ## 설치
 
 ```bash
-brew install --cask --no-quarantine HOYUN-Y/graph-editor/graph-editor
+brew install --cask HOYUN-Y/graph-editor/graph-editor
 ```
 
 ```bash
@@ -13,17 +13,21 @@ brew upgrade --cask graph-editor          # 업데이트
 brew uninstall --zap --cask graph-editor  # 제거 (로그인 세션까지 정리)
 ```
 
-## `--no-quarantine` 이 왜 필요한가
+별도 플래그가 필요 없다. 아래 이유로 cask 가 알아서 처리한다.
+
+## quarantine 처리
 
 앱은 **ad-hoc 서명**이다. Apple Silicon 이 arm64 바이너리에 요구하는 최소 조건은 만족하지만
-Developer ID 서명·공증은 하지 않았다. brew 가 내려받은 파일에는 `com.apple.quarantine` 이 붙고,
-Gatekeeper 는 Developer ID 가 아닌 앱을 차단한다.
+Developer ID 서명·공증은 하지 않았다. 그래서 brew 가 내려받은 파일에 `com.apple.quarantine` 이
+붙으면 Gatekeeper 가 거부한다(`spctl -a` → `rejected`). macOS 15(Sequoia)부터는 우클릭 → 열기
+우회도 제거돼서, 사용자가 `시스템 설정 → 개인정보 보호 및 보안 → 확인 없이 열기` 를 거쳐야 한다.
 
-`--no-quarantine` 을 빼면 첫 실행에서 `시스템 설정 → 개인정보 보호 및 보안 → 확인 없이 열기` 를
-한 번 거쳐야 한다. macOS 15(Sequoia)부터 우클릭 → 열기 우회가 제거됐다.
+예전에는 `brew install --cask --no-quarantine` 으로 피했지만 **Homebrew 6 에서 그 플래그가
+없어졌다.** 그래서 이 cask 는 `postflight` 에서 설치 직후 quarantine 속성을 직접 떼어 낸다.
+사용자가 플래그를 기억할 필요도, 시스템 설정을 열 필요도 없다.
 
-서명을 붙이려면 Apple Developer Program(연 $99)이 필요하다. 사용자가 GitHub 계정 allowlist 로
-닫혀 있는 동안에는 값이 없다고 판단해 미루고 있다.
+Developer ID 서명·공증을 도입하면 이 처리는 필요 없어진다. 연 $99 가 들고, 사용자가 GitHub 계정
+allowlist 로 닫혀 있는 동안에는 값이 없다고 판단해 미루고 있다.
 
 ## 이 앱이 무엇인가
 

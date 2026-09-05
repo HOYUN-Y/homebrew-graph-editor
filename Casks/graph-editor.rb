@@ -8,12 +8,20 @@ cask "graph-editor" do
   homepage "https://editor.devprofessional.xyz"
 
   depends_on arch: :arm64
-  depends_on macos: ">= :sequoia"
+  depends_on macos: :sequoia
 
   app "Graph Editor.app"
 
-  # 앱은 ad-hoc 서명이라 Developer ID 가 없다. quarantine 이 붙으면 Gatekeeper 가 막으므로
-  # 설치할 때 --no-quarantine 을 붙인다. 자세한 내용은 README 참고.
+  # 이 앱은 ad-hoc 서명이라 Developer ID 가 없다. brew 가 내려받은 파일에는 quarantine 이 붙고
+  # Gatekeeper 는 Developer ID 가 아닌 앱을 거부한다(`spctl -a` → rejected).
+  #
+  # Homebrew 6 에서 `--no-quarantine` 플래그가 없어졌으므로 설치 직후 여기서 직접 떼어 낸다.
+  # 사용자가 매번 플래그를 기억하지 않아도 되고, 시스템 설정 우회 절차도 필요 없다.
+  # Developer ID 서명·공증을 도입하면(PLAN O8) 이 블록을 지운다.
+  postflight do
+    system_command "/usr/bin/xattr",
+                   args: ["-dr", "com.apple.quarantine", "#{appdir}/Graph Editor.app"]
+  end
 
   zap trash: [
     "~/Library/Application Support/desktop-shell",
