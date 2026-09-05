@@ -18,9 +18,10 @@ cask "graph-editor" do
   # Homebrew 6 에서 `--no-quarantine` 플래그가 없어졌으므로 설치 직후 여기서 직접 떼어 낸다.
   # 사용자가 매번 플래그를 기억하지 않아도 되고, 시스템 설정 우회 절차도 필요 없다.
   # Developer ID 서명·공증을 도입하면(PLAN O8) 이 블록을 지운다.
-  postflight do
-    system_command "/usr/bin/xattr",
-                   args: ["-dr", "com.apple.quarantine", "#{appdir}/Graph Editor.app"]
+  # `postflight` 블록은 Homebrew 6 에서 폐기됐다. 선언형 스텝은 args 에서 `{{appdir}}` 토큰을
+  # 확장해 주므로(install_steps.rb 의 CONTENT_PATH_TOKENS) 같은 일을 그대로 할 수 있다.
+  postflight_steps do
+    run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{appdir}}/Graph Editor.app"]
   end
 
   # 실행 중인 앱은 brew 가 교체하지 못한다. 이게 없으면 `brew upgrade` 전에 사용자가 손으로

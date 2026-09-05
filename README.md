@@ -63,3 +63,8 @@ gh release create v<version> dist/graph-editor-<version>-arm64.dmg --repo HOYUN-
 
 앱이 실행 중이어도 `brew upgrade` 가 그냥 되도록 cask 에 `uninstall quit:` 을 둔다 — 없으면
 사용자가 손으로 앱을 끄고 다시 시도해야 한다.
+
+**`uninstall quit:` 은 한 버전 늦게 걸린다.** brew 의 `uninstall` 은 새 cask 가 아니라 **설치 당시
+저장된 cask 정의**를 쓴다(`cask/installer.rb` 의 `load_installed_caskfile!`). 그래서 이 stanza 를
+새로 넣은 버전으로 올라갈 때는 아직 안 걸리고, 그 다음 업그레이드부터 동작한다. 재설치를 두 번
+하면 확인할 수 있다 — 두 번째에 `==> Quitting application` 이 찍힌다.
