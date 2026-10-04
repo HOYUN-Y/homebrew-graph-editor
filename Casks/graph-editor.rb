@@ -1,6 +1,6 @@
 cask "graph-editor" do
-  version "0.2.0"
-  sha256 "0c11b68fdd4db511b9bf3eb243028545f06b163decba50accc8dce25de3793ba"
+  version "0.3.0"
+  sha256 "b0d9c562ae690a7493832b970eaff4ef61736efa223f97f7364474c242b47385"
 
   url "https://github.com/HOYUN-Y/homebrew-graph-editor/releases/download/v#{version}/graph-editor-#{version}-arm64.dmg"
   name "Graph Editor"
